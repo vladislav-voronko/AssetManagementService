@@ -42,11 +42,14 @@ public class AssetManagementDbContext : DbContext
             
             entity.HasQueryFilter(t => !t.IsDeleted);
 
-            entity.Property(t => t.Price).IsRequired();
+            entity.Property(t => t.Amount)
+                .HasPrecision(18, 6)
+                .IsRequired();
 
             entity.OwnsOne(t => t.Price, owned =>
             {
                 owned.Property(p => p.Amount)
+                     .HasPrecision(18, 6)
                      .HasColumnName("Price_Amount")
                      .IsRequired();
 
@@ -65,6 +68,7 @@ public class AssetManagementDbContext : DbContext
             entity.OwnsOne(r => r.Amount, owned =>
             {
                 owned.Property(p => p.Amount)
+                     .HasPrecision(18, 6)
                      .HasColumnName("Price_Amount")
                      .IsRequired();
 
@@ -94,12 +98,12 @@ public class AssetManagementDbContext : DbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedAt = DateTime.UtcNow;
-                entry.Entity.UpdatedAt = DateTime.UtcNow;
+                entry.Entity.CreatedAt = DateTimeOffset.UtcNow;
+                entry.Entity.UpdatedAt = DateTimeOffset.UtcNow;
             }
             else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.UpdatedAt = DateTime.UtcNow;
+                entry.Entity.UpdatedAt = DateTimeOffset.UtcNow;
             }
         }
     }
