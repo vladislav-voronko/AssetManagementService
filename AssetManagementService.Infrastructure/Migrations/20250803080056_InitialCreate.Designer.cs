@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AssetManagementService.Infrastructure.Migrations
 {
     [DbContext(typeof(AssetManagementDbContext))]
-    [Migration("20250802204350_InitialCreate")]
+    [Migration("20250803080056_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,6 +19,7 @@ namespace AssetManagementService.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("assetManagement")
                 .HasAnnotation("ProductVersion", "9.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -49,7 +50,7 @@ namespace AssetManagementService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Assets");
+                    b.ToTable("Assets", "assetManagement");
                 });
 
             modelBuilder.Entity("AssetManagementService.Domain.Aggregates.Asset.Replenishment", b =>
@@ -80,7 +81,7 @@ namespace AssetManagementService.Infrastructure.Migrations
 
                     b.HasIndex("AssetId");
 
-                    b.ToTable("Replenishments");
+                    b.ToTable("Replenishments", "assetManagement");
                 });
 
             modelBuilder.Entity("AssetManagementService.Domain.Aggregates.Asset.Trade", b =>
@@ -118,7 +119,7 @@ namespace AssetManagementService.Infrastructure.Migrations
 
                     b.HasIndex("AssetId");
 
-                    b.ToTable("Trades");
+                    b.ToTable("Trades", "assetManagement");
                 });
 
             modelBuilder.Entity("AssetManagementService.Domain.Aggregates.Asset.Replenishment", b =>
@@ -146,7 +147,7 @@ namespace AssetManagementService.Infrastructure.Migrations
 
                             b1.HasKey("ReplenishmentId");
 
-                            b1.ToTable("Replenishments");
+                            b1.ToTable("Replenishments", "assetManagement");
 
                             b1.WithOwner()
                                 .HasForeignKey("ReplenishmentId");
@@ -181,7 +182,7 @@ namespace AssetManagementService.Infrastructure.Migrations
 
                             b1.HasKey("TradeId");
 
-                            b1.ToTable("Trades");
+                            b1.ToTable("Trades", "assetManagement");
 
                             b1.WithOwner()
                                 .HasForeignKey("TradeId");

@@ -19,25 +19,17 @@ public class AssetRepository : IAssetRepository
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
-    public async Task AddAsync(Asset asset)
+    public async Task CreateAsync(Asset asset)
     {
         await _dbContext.Assets.AddAsync(asset);
-        await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Asset asset)
-    {
-        _dbContext.Assets.Update(asset);
-        await _dbContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Guid id)
     {
-        var asset = GetByIdAsync(id).Result;
+        var asset = await GetByIdAsync(id);
         if (asset != null)
         {
             asset.MarkAsDeleted();
-            await _dbContext.SaveChangesAsync();
         }
     }
 }

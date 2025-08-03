@@ -11,8 +11,12 @@ namespace AssetManagementService.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "assetManagement");
+
             migrationBuilder.CreateTable(
                 name: "Assets",
+                schema: "assetManagement",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -29,6 +33,7 @@ namespace AssetManagementService.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Replenishments",
+                schema: "assetManagement",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -47,6 +52,7 @@ namespace AssetManagementService.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Replenishments_Assets_AssetId",
                         column: x => x.AssetId,
+                        principalSchema: "assetManagement",
                         principalTable: "Assets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -54,6 +60,7 @@ namespace AssetManagementService.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Trades",
+                schema: "assetManagement",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -74,6 +81,7 @@ namespace AssetManagementService.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_Trades_Assets_AssetId",
                         column: x => x.AssetId,
+                        principalSchema: "assetManagement",
                         principalTable: "Assets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -81,11 +89,13 @@ namespace AssetManagementService.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Replenishments_AssetId",
+                schema: "assetManagement",
                 table: "Replenishments",
                 column: "AssetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trades_AssetId",
+                schema: "assetManagement",
                 table: "Trades",
                 column: "AssetId");
         }
@@ -94,13 +104,16 @@ namespace AssetManagementService.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Replenishments");
+                name: "Replenishments",
+                schema: "assetManagement");
 
             migrationBuilder.DropTable(
-                name: "Trades");
+                name: "Trades",
+                schema: "assetManagement");
 
             migrationBuilder.DropTable(
-                name: "Assets");
+                name: "Assets",
+                schema: "assetManagement");
         }
     }
 }

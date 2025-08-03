@@ -16,6 +16,8 @@ public class AssetManagementDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.HasDefaultSchema("assetManagement");
+
         modelBuilder.Entity<Asset>(entity =>
         {
             entity.HasKey(a => a.Id);

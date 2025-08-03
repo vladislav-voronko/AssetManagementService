@@ -30,7 +30,7 @@ namespace AssetManagementService.Domain.Aggregates.Asset
             Name = name;
         }
 
-        public void AddTrade(TradeType type, decimal amount, Money price, DateTime date, bool isReinvested = false)
+        public void AddTrade(TradeType type, decimal amount, Money price, DateTimeOffset date, bool isReinvested = false)
         {
             if (price == null)
                 throw new ArgumentNullException(nameof(price));
@@ -42,7 +42,7 @@ namespace AssetManagementService.Domain.Aggregates.Asset
             _trades.Add(trade);
         }
 
-        public void AddReplenishment(Money amount, DateTime date, string? note = null)
+        public void AddReplenishment(Money amount, DateTimeOffset date, string? note = null)
         {
             if (amount == null)
                 throw new ArgumentNullException(nameof(amount));
@@ -52,6 +52,24 @@ namespace AssetManagementService.Domain.Aggregates.Asset
 
             var replenishment = new Replenishment(Guid.NewGuid(), Id, amount, date, note);
             _replenishments.Add(replenishment);
+        }
+
+        public void RemoveTrade(Guid tradeId)
+        {
+            var trade = _trades.FirstOrDefault(t => t.Id == tradeId);
+            if (trade != null)
+            {
+                trade.MarkAsDeleted();
+            }
+        }
+
+        public void RemoveReplenishment(Guid replenishmentId)
+        {
+            var replenishment = _replenishments.FirstOrDefault(r => r.Id == replenishmentId);
+            if (replenishment != null)
+            {
+                replenishment.MarkAsDeleted();
+            }
         }
 
         public decimal GetTotalHoldings()
